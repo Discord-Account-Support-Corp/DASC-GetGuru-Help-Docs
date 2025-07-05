@@ -2,29 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Guru Workspace</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guru PWA</title>
-
-  <!-- PWA bits -->
-  <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#6200EE">
-
-  <!-- Optional global styles -->
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Full-screen wrapper around the Guru dashboard -->
+  <div id="fallback">
+    <h1>Loading Guru Workspace…</h1>
+    <p>If you are not redirected, <a href="https://app.getguru.com/dashboard" target="_blank">click here</a> to open Guru directly.</p>
+  </div>
+
   <iframe
+    id="guruFrame"
     src="https://app.getguru.com/dashboard"
     title="Guru Workspace"
     allow="clipboard-read; clipboard-write"
+    onload="document.getElementById('fallback').style.display='none';"
   ></iframe>
 
   <script>
-    /* Register the service-worker for installability & offline page */
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
-        .catch(err => console.error('SW registration failed', err));
+        .catch(err => console.warn('SW registration failed:', err));
     }
   </script>
 </body>
