@@ -6,26 +6,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#6200EE">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
+  <!-- tiny CSS just for the loading screen -->
+  <style>
+    html,body{margin:0;height:100%;display:flex;align-items:center;justify-content:center;font-family:sans-serif;background:#fff}
+    #msg{color:#6200EE;text-align:center;padding:1rem}
+  </style>
 </head>
 <body>
-  <div id="fallback">
-    <h1>Loading Guru Workspace…</h1>
-    <p>If you are not redirected, <a href="https://app.getguru.com/dashboard" target="_blank">click here</a> to open Guru directly.</p>
+  <div id="msg">
+    <h1>Loading Guru …</h1>
+    <p>If nothing happens, <a href="https://app.getguru.com/dashboard" target="_blank">click here</a>.</p>
   </div>
 
-  <iframe
-    id="guruFrame"
-    src="https://app.getguru.com/dashboard"
-    title="Guru Workspace"
-    allow="clipboard-read; clipboard-write"
-    onload="document.getElementById('fallback').style.display='none';"
-  ></iframe>
-
   <script>
+    // 1) Register SW so the site is installable
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .catch(err => console.warn('SW registration failed:', err));
+      navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+    }
+
+    // 2) As soon as we're sure JS is running, go to Guru
+    if (navigator.onLine) {
+      // Give SW a tick to install & claim before we leave
+      setTimeout(() => location.replace('https://app.getguru.com/dashboard'), 150);
+    } else {
+      // Offline: let service-worker fall back to offline.html
+      console.log('Offline – staying on shell');
     }
   </script>
 </body>
