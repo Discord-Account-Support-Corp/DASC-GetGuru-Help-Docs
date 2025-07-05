@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guru PWA</title>
+
+  <!-- PWA bits -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6200EE">
+
+  <!-- Optional global styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Full-screen wrapper around the Guru dashboard -->
+  <iframe
+    src="https://app.getguru.com/dashboard"
+    title="Guru Workspace"
+    allow="clipboard-read; clipboard-write"
+  ></iframe>
+
+  <script>
+    /* Register the service-worker for installability & offline page */
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .catch(err => console.error('SW registration failed', err));
+    }
+  </script>
+</body>
+</html>
